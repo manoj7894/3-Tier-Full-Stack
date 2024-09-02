@@ -30,39 +30,16 @@ spec:
       containers:
         - name: yelp-camp-container
           image: manoj3003/pipelie-cicd:18
+          volumeMounts:
+            - name: db-connection
+              mountPath: /opt
           ports:
             - containerPort: 3000
-          env:
-            - name: CLOUDINARY_CLOUD_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: CLOUDINARY_CLOUD_NAME
-            - name: CLOUDINARY_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: CLOUDINARY_KEY
-            - name: CLOUDINARY_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: CLOUDINARY_SECRET
-            - name: MAPBOX_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: MAPBOX_TOKEN
-            - name: DB_URL
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: DB_URL
-            - name: SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: yelp-camp-secrets
-                  key: SECRET
+      volumes:
+        - name: db-connection
+          Secret:
+            name: yelp-camp-secrets
+      
           livenessProbe:
             httpGet:
               path: /
